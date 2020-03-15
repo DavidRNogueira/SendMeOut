@@ -1,17 +1,6 @@
 package com.sendmeout.SendMeOut.Dto;
 
-import com.sendmeout.SendMeOut.Bean.UserDetailsBean;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
-
-
 public class UserDto {
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private LocalDate currentDate = LocalDate.now();
 
     private String username;
     private String password;
@@ -26,10 +15,12 @@ public class UserDto {
     private String state;
     private String country;
     private String title;
-    private String id = UUID.randomUUID().toString();
-    private String dateJoined = currentDate.format(formatter) ;
-    private int phone;
+    private String id ;
+    private String dateJoined;
+    private long phone;
     private int zip;
+
+   public UserDto(){}
 
     public UserDto(String username,
                    String password,
@@ -44,8 +35,9 @@ public class UserDto {
                    String state,
                    String country,
                    String title,
-                   int phone,
-                   int zip){
+                   long phone,
+                   int zip,
+                   String id){
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -61,6 +53,37 @@ public class UserDto {
         this.title = title;
         this.phone = phone;
         this.zip = zip;
+    }
+
+    //Constructor for setting info at login
+    public UserDto(String username,
+                   String firstName,
+                   String lastName,
+                   String email,
+                   String organization,
+                   String addressOne,
+                   String addressTwo,
+                   String city,
+                   String state,
+                   String country,
+                   String title,
+                   long phone,
+                   int zip,
+                   String id) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.organization = organization;
+        this.addressOne = addressOne;
+        this.addressTwo = addressTwo;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.title = title;
+        this.phone = phone;
+        this.zip = zip;
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -167,7 +190,7 @@ public class UserDto {
         this.dateJoined = dateJoined;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 

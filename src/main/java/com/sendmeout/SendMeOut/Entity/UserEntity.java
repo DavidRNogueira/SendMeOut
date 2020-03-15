@@ -10,25 +10,24 @@ import javax.persistence.Id;;
 @Table(name="user")
 public class UserEntity {
 
-    public UserEntity (){}
 
-    public UserEntity(  String username,
-                        String password,
-                        String firstName,
-                        String lastName,
-                        String email,
-                        String gender,
-                        String organization,
-                        String addressOne,
-                        String addressTwo,
-                        String city,
-                        String state,
-                        String country,
-                        String title,
-                        int phone,
-                        int zip,
-                        String id,
-                        String dateJoined ){
+    public UserEntity(String username,
+                      String password,
+                      String firstName,
+                      String lastName,
+                      String email,
+                      String gender,
+                      String organization,
+                      String addressOne,
+                      String addressTwo,
+                      String city,
+                      String state,
+                      String country,
+                      String title,
+                      long phone,
+                      int zip,
+                      String id,
+                      String dateJoined ){
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -86,7 +85,7 @@ public class UserEntity {
     private String title;
 
     @Column(name="phone")
-    private int phone;
+    private long phone;
 
     @Column(name="zip")
     private int zip;
@@ -202,7 +201,7 @@ public class UserEntity {
         this.title = title;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
@@ -217,5 +216,21 @@ public class UserEntity {
     public void setZip(int zip) {
         this.zip = zip;
     }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDateJoined() {
+        return dateJoined;
+    }
+
+    public void setDateJoined(String dateJoined) {
+        this.dateJoined = dateJoined;
+    }
+
 
 }

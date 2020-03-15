@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react"
+import React, {FC, useState, useContext} from "react"
 import LogoImage from "../../Images/SendMeOutLogo.svg"
 import { 
     CreateAccountH1,
@@ -15,8 +15,10 @@ import {
     Required 
 } from "./RegisterStyles"
 import axios from "axios"
+import {UserContext, history} from "../../App"
 
 const Register:FC = ():JSX.Element => {
+    const context = useContext(UserContext);
     const [errors, setErrors] = useState<string[]>([])
     const [username, setUsername] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null)
@@ -24,14 +26,14 @@ const Register:FC = ():JSX.Element => {
     const [lastName, setLastName] = useState<string | null>(null);
     const [organization, setOrganization] = useState<string | null>(null);
     const [email, setEmail] = useState<string | null>(null);
-    const [phone, setPhone] = useState<string | null>(null);
+    const [phone, setPhone] = useState<number | null>(null);
     const [gender, setGender] = useState<string | null>("Male");
     const [title, setTitle] = useState<string | null>(null);
     const [addressOne, setAddressOne] = useState<string | null>(null);
     const [addressTwo, setAddressTwo] = useState<string | null>(null);
     const [city, setCity] = useState<string | null>(null);
     const [state, setState] = useState<string | null>(null);
-    const [zip, setZip] = useState<string | null>(null);
+    const [zip, setZip] = useState<number | null>(null);
     const [country, setCountry] = useState<string | null>(null);
 
     const handleSubmit = async () => {
@@ -91,17 +93,22 @@ const Register:FC = ():JSX.Element => {
             country,
             title,
             phone,
-            zip,
+            zip
         }
 
-       fetch("/auth/create-new-user" , {
-               method: "POST",
-               credentials:"same-origin",
-               headers: {
-               "Content-Type": "application/json"
-               },
-               body: JSON.stringify(payload)
-           })
+        const response = await axios.post("/auth/create-new-user", payload);
+            if ( response.status === 200){
+                context.useDispatch({
+                    type: "SET_USER",
+                    payload : {
+                        username,
+                        firstName,
+                        lastName
+                    }
+                })
+                console.log(context.userInfo)
+                history.push("/")
+            }
     }
 
     
@@ -145,7 +152,10 @@ const Register:FC = ():JSX.Element => {
                         errors.includes("email") && <Required>This field is required.</Required>
                     }
                     <StyledLabel>Phone Number <Required>*</Required></StyledLabel>
-                    <StyledInput type="text" onChange={(event:React.ChangeEvent<HTMLInputElement>)=>{setPhone(event.currentTarget.value)}}/>
+                    <StyledInput type="text" onChange={(event:React.ChangeEvent<HTMLInputElement>)=>{
+                        const number = parseInt(event.currentTarget.value);
+                        setPhone(number)
+                    }}/>
                     {
                         errors.includes("phone") && <Required>This field is required.</Required>
                     }
@@ -177,7 +187,10 @@ const Register:FC = ():JSX.Element => {
                         errors.includes("state") && <Required>This field is required.</Required>
                     }
                     <StyledLabel>ZIP Code <Required>*</Required></StyledLabel>
-                    <StyledInput type="text" onChange={(event:React.ChangeEvent<HTMLInputElement>)=>{setZip(event.currentTarget.value)}}/>
+                    <StyledInput type="number" onChange={(event:React.ChangeEvent<HTMLInputElement>)=>{
+                        const number = parseInt(event.currentTarget.value);
+                        setZip(number);
+                        }}/>
                     {
                         errors.includes("zip") && <Required>This field is required.</Required>
                     }

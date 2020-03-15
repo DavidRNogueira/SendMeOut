@@ -21,4 +21,11 @@ public class UserDao {
         Session session = entityManager.unwrap(Session.class);
         session.saveOrUpdate(userEntity);
     }
+
+    public UserEntity getUserByUsername (String username) {
+        Session session = entityManager.unwrap(Session.class);
+        return session.get(UserEntity.class, username);
+
+    }
+
 }

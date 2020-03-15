@@ -1,7 +1,5 @@
 package com.sendmeout.SendMeOut.Bean;
 
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
