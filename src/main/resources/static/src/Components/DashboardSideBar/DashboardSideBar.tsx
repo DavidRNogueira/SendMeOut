@@ -1,8 +1,7 @@
-import React, { FC, useState } from "react";
-import { DashboardSideBarDiv, IconDiv, StyledLink, ProfileImg } from "./DashboardSideBarStyles";
+import React, { FC } from "react";
+import { DashboardSideBarDiv, IconDiv, StyledLink} from "./DashboardSideBarStyles";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faCogs, faCartPlus, faBell, faTasks } from '@fortawesome/free-solid-svg-icons'
-import FamilyPhoto from "../../Images/FamilyPhoto2019copy.jpg"
 
 const DashboardSideBar:FC = ():JSX.Element => {
     

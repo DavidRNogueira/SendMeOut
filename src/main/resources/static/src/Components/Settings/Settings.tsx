@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react"
+import React, {FC} from "react"
 import { 
     SettingsHeader,
     SettingsMainDiv,
@@ -8,28 +8,9 @@ import {
     InputLabel, 
     ColumnHeader, 
     UpdateBtn, 
-    ProfileImg
  } from "./SettingsStyles"
- import Img from "../../Images/FamilyPhoto2019copy.jpg"
 
 const Settings:FC = ():JSX.Element => {
-    const [ src, setSrc ] = useState<any>(Img)
-    const [ crop, setCrop ] = useState<any>({
-        unit: '%',
-        width: 30,
-        aspect: 16 / 9,
-      })
-
-    const onSelectFile = (e:any) => {
-        if (e.target.files && e.target.files.length > 0) {
-          const reader = new FileReader();
-          reader.addEventListener('load', () =>
-            setSrc(reader.result)
-          );
-          reader.readAsDataURL(e.target.files[0]);
-        }
-      };
-
     return (
         <SettingsMainDiv>
             <SettingsHeader>Settings</SettingsHeader>
@@ -64,7 +45,7 @@ const Settings:FC = ():JSX.Element => {
                 </InputsColumn>
                 <InputsColumn>
                     <ColumnHeader>Profile Image</ColumnHeader> 
-                    <InputField type="file" onChange={(e:any) => {onSelectFile(e)}}/>
+                    <InputField type="file"/>
                 </InputsColumn>
             </InputsDiv>
            <UpdateBtn>UPDATE</UpdateBtn>

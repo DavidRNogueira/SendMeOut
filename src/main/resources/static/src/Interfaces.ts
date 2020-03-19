@@ -8,3 +8,9 @@ export interface UserContextInterface {
     firstName:string,
     lastName:string,
 }
+
+export interface ToastPropsInterface {
+        title: string,
+        description: string,
+        type: string
+}

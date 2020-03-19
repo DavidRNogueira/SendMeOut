@@ -1,24 +1,37 @@
-import React, {FC, useState, useContext} from "react"
+import React, {FC, useState} from "react"
 import LogoImage from "../../Images/SendMeOutLogo.svg"
 import { 
-    CreateAccountH1,
     HeaderDiv,
-    HeaderHR,
-    FormDiv, 
-    StyledInput, 
-    StyledLabel, 
-    SectionDiv, 
-    SectionHeader, 
-    RegisterBtn, 
-    GreyDiv, 
+    HeaderContent,
+    GreyDiv,
+    ChooseOptionBtn,
+    ChooseOptionDiv,
+    BackBtn,
+    CreateAccountH1,
+    FormDiv,
+    SectionDiv,
+    SectionHeader,
+    StyledLabel,
+    Required,
+    StyledInput,
     BtnDiv,
-    Required 
-} from "./RegisterStyles"
+    RegisterBtn,
+    LoginOptionDiv,
+    LoginOption,
+    LoginHeader,
+    HeaderHR,
+    LoginDiv,
+    VerticalLine,
+    ClickHere,
+} from "./AccountStyles"
+import Toast from "../../Toast/Toast"
+import { toast, ToastContainer } from "react-toastify"
+import {history} from "../../App"
 import axios from "axios"
-import {UserContext, history} from "../../App"
 
-const Register:FC = ():JSX.Element => {
-    const context = useContext(UserContext);
+const Account:FC = ():JSX.Element => {
+
+    const [activePage , setActivePage] = useState<number>(0)
     const [errors, setErrors] = useState<string[]>([])
     const [username, setUsername] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null)
@@ -27,7 +40,7 @@ const Register:FC = ():JSX.Element => {
     const [organization, setOrganization] = useState<string | null>(null);
     const [email, setEmail] = useState<string | null>(null);
     const [phone, setPhone] = useState<number | null>(null);
-    const [gender, setGender] = useState<string | null>("Male");
+    const [gender, setGender] = useState<string | null>(null);
     const [title, setTitle] = useState<string | null>(null);
     const [addressOne, setAddressOne] = useState<string | null>(null);
     const [addressTwo, setAddressTwo] = useState<string | null>(null);
@@ -37,8 +50,8 @@ const Register:FC = ():JSX.Element => {
     const [country, setCountry] = useState<string | null>(null);
 
     const handleSubmit = async () => {
-        const currentErrors:string[] = [];
 
+        const currentErrors:string[] = [];
         if (!username){
             currentErrors.push("username");
         }
@@ -96,31 +109,67 @@ const Register:FC = ():JSX.Element => {
             zip
         }
 
-        const response = await axios.post("/auth/create-new-user", payload);
+        const response = await axios.post("/reg/create-new-user", payload);
             if ( response.status === 200){
-                context.useDispatch({
-                    type: "SET_USER",
-                    payload : {
-                        username,
-                        firstName,
-                        lastName
-                    }
-                })
-                console.log(context.userInfo)
                 history.push("/")
+                toast(<Toast title="Success!" description="Your account has been created." type="success"/>, {})
             }
     }
 
-    
+    const handleLogin = async () => {
+            const payload = {
+                username,
+                password
+            }
+
+            const response = await axios.post( "/auth/login", payload)
+                if (response.status === 200){
+                    console.log("LOGGED IN")
+                }
+    }
 
     return (
         <>
+        <ToastContainer/>
         <HeaderDiv>
-            <img src={LogoImage} alt="logo"/>
+            <HeaderContent>
+                <img src={LogoImage} alt="logo"/>
+                <BackBtn to="/">
+                    Back
+                </BackBtn>
+            </HeaderContent>
             <HeaderHR/>
         </HeaderDiv>
-        <CreateAccountH1>Create Account</CreateAccountH1>
         <GreyDiv>
+        {
+            activePage === 0 && 
+            <ChooseOptionDiv>
+                <ChooseOptionBtn onClick={(e:any) => setActivePage(1)}>Login</ChooseOptionBtn>
+                <VerticalLine/>
+                <ChooseOptionBtn onClick={(e:any) => setActivePage(2)}>Register</ChooseOptionBtn>
+            </ChooseOptionDiv>
+            
+        }
+        {
+            activePage === 1 && 
+            <LoginDiv>
+              <LoginHeader>Login</LoginHeader>
+              <SectionDiv>
+                <StyledLabel>Username</StyledLabel>  
+                <StyledInput type="text"/>
+                <StyledLabel>Password</StyledLabel>  
+                <StyledInput type="text"/>
+              </SectionDiv>
+              <RegisterBtn onClick={handleSubmit}>Login</RegisterBtn>
+              <LoginOptionDiv>
+                    <LoginOption>Need to create a SendMeOut account?<ClickHere onClick={(e:any) => {setActivePage(2)}}>Click Here</ClickHere></LoginOption>
+                </LoginOptionDiv>
+            </LoginDiv>
+        }
+        {
+            activePage === 2 && 
+        <>
+        <CreateAccountH1>Create Account</CreateAccountH1>
             <FormDiv>
                 <SectionDiv>
                     <SectionHeader>Basic Info</SectionHeader>
@@ -161,6 +210,7 @@ const Register:FC = ():JSX.Element => {
                     }
                     <StyledLabel>Gender <Required>*</Required></StyledLabel>
                     <select id="gender" onChange={(event:React.ChangeEvent<HTMLSelectElement>)=>{setGender(event.currentTarget.value)}}>
+                        <option value="" selected disabled hidden>Select gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
@@ -202,11 +252,17 @@ const Register:FC = ():JSX.Element => {
                 </SectionDiv>
             </FormDiv>
             <BtnDiv>
-                <RegisterBtn onClick={handleSubmit}>Create Account</RegisterBtn>
+                <RegisterBtn onClick={handleSubmit}>Register</RegisterBtn>
+                <LoginOptionDiv>
+                    <LoginOption>Already have a SendMeOut account?<ClickHere onClick={(e:any) => {setActivePage(1)}}>Click Here</ClickHere></LoginOption>
+                </LoginOptionDiv>
             </BtnDiv>
+        </>
+        }
         </GreyDiv>
-                </>
+       
+        </>
     )
 }
 
-export default Register;
+export default Account;

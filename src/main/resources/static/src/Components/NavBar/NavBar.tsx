@@ -8,11 +8,8 @@ const NavBar:FC = ():JSX.Element => {
         <NavBarDiv>
             <Logo src={LogoImage} alt="Logo"/>
             <OptionsDiv>
-            <NavBarOption to="/dashboard">
-                Login
-            </NavBarOption>
-            <NavBarOption to="/create-account">
-                Create Account
+            <NavBarOption to="/account">
+                Login/SignUp
             </NavBarOption>
             <SearchBar type="text"/>
             </OptionsDiv>

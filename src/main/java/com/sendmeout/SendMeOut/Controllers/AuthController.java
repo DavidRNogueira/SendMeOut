@@ -22,11 +22,6 @@ public class AuthController {
         this.servletResponse = servletResponse;
     }
 
-    @PostMapping("/create-new-user")
-    public void createNewUser (@RequestBody UserDto userDto) {
-        userService.addOrUpdateUser(userDto);
-    }
-
     @PostMapping("/login")
     public void handleLogin (@RequestBody LoginDto loginDto){
         UserDto userInfo = userService.handleLogin(loginDto.getUsername(), loginDto.getPassword());
