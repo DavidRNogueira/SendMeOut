@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react"
+import React, {FC, useState, useContext} from "react"
 import LogoImage from "../../Images/SendMeOutLogo.svg"
 import { 
     HeaderDiv,
@@ -26,11 +26,12 @@ import {
 } from "./AccountStyles"
 import Toast from "../../Toast/Toast"
 import { toast, ToastContainer } from "react-toastify"
-import {history} from "../../App"
+import {history, UserContext} from "../../App"
 import axios from "axios"
 
 const Account:FC = ():JSX.Element => {
 
+    const context = useContext(UserContext)
     const [activePage , setActivePage] = useState<number>(0)
     const [errors, setErrors] = useState<string[]>([])
     const [username, setUsername] = useState<string | null>(null);
@@ -117,6 +118,8 @@ const Account:FC = ():JSX.Element => {
     }
 
     const handleLogin = async () => {
+            const currentErrors:string[] = []
+        
             const payload = {
                 username,
                 password
@@ -124,8 +127,15 @@ const Account:FC = ():JSX.Element => {
 
             const response = await axios.post( "/auth/login", payload)
                 if (response.status === 200){
-                    console.log("LOGGED IN")
-                }
+                    alert("LOGGED IN")
+                    context.dispatch({
+                        type: "SET_USER",
+                        payload: response.data
+                    })
+                } else {
+                    currentErrors.push("login")
+                    setErrors([...errors, ...currentErrors])
+                } 
     }
 
     return (
@@ -156,11 +166,14 @@ const Account:FC = ():JSX.Element => {
               <LoginHeader>Login</LoginHeader>
               <SectionDiv>
                 <StyledLabel>Username</StyledLabel>  
-                <StyledInput type="text"/>
+                <StyledInput type="text" onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setUsername(e.currentTarget.value)}}/>
                 <StyledLabel>Password</StyledLabel>  
-                <StyledInput type="text"/>
+                <StyledInput type="text" onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setPassword(e.currentTarget.value)}}/>
+                {
+                    errors.includes("login") && <Required>Your information does not match our records.</Required>
+                }
               </SectionDiv>
-              <RegisterBtn onClick={handleSubmit}>Login</RegisterBtn>
+              <RegisterBtn onClick={handleLogin}>Login</RegisterBtn>
               <LoginOptionDiv>
                     <LoginOption>Need to create a SendMeOut account?<ClickHere onClick={(e:any) => {setActivePage(2)}}>Click Here</ClickHere></LoginOption>
                 </LoginOptionDiv>

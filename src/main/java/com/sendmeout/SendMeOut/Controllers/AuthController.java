@@ -1,5 +1,6 @@
 package com.sendmeout.SendMeOut.Controllers;
 
+import com.sendmeout.SendMeOut.Dto.ContextDto;
 import com.sendmeout.SendMeOut.Dto.LoginDto;
 import com.sendmeout.SendMeOut.Dto.UserDto;
 import com.sendmeout.SendMeOut.Service.UserService;
@@ -17,19 +18,20 @@ public class AuthController {
     private UserService userService;
     private HttpServletResponse servletResponse;
 
-    public AuthController (UserService userService , HttpServletResponse servletResponse){
+    public AuthController (UserService userService , HttpServletResponse servletResponse ){
         this.userService = userService;
         this.servletResponse = servletResponse;
     }
 
     @PostMapping("/login")
-    public void handleLogin (@RequestBody LoginDto loginDto){
-        UserDto userInfo = userService.handleLogin(loginDto.getUsername(), loginDto.getPassword());
+    public ContextDto handleLogin (@RequestBody LoginDto loginDto){
+        ContextDto userInfo = userService.handleLogin(loginDto.getUsername(), loginDto.getPassword());
 
         if (userInfo == null){
-            return;
+            return null;
         }
 
         userService.addCookieToBrowser(servletResponse, userInfo.getId());
+        return userInfo;
     }
 }

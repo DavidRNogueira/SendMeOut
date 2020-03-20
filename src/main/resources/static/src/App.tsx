@@ -31,7 +31,7 @@ export const UserContext = createContext<any>(initState);
     
     const [state, dispatch] = useReducer<Reducer<UserContextInterface,ActionInterface>>(reducer, initState);
     return(
-      <UserContext.Provider value = {{userInfo:state, useDispatch:dispatch}}>
+      <UserContext.Provider value = {{userInfo:state, dispatch}}>
         <Router history={history}>
           <Route exact path="/" component={Home}/>
           <Route path="/account" component={Account}/>

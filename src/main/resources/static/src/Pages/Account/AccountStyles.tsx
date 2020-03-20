@@ -41,7 +41,9 @@ font-weight: bold;
 export const SectionDiv = styled.div `
 display:flex;
 flex-direction:column;
+align-items:center;
 margin:1em;
+width:60%;
 `
 
 export const SectionHeader = styled.h1 `

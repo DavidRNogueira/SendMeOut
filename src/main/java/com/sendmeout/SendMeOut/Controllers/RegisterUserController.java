@@ -5,8 +5,10 @@ import com.sendmeout.SendMeOut.Service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/reg")
+@RestController
 public class RegisterUserController {
 
     private UserService userService;

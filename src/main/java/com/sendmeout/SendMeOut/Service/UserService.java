@@ -1,6 +1,7 @@
 package com.sendmeout.SendMeOut.Service;
 
 import com.sendmeout.SendMeOut.Dao.UserDao;
+import com.sendmeout.SendMeOut.Dto.ContextDto;
 import com.sendmeout.SendMeOut.Dto.LoginDto;
 import com.sendmeout.SendMeOut.Dto.UserDto;
 import com.sendmeout.SendMeOut.Entity.UserEntity;
@@ -53,31 +54,16 @@ public class UserService {
         userDao.createOrUpdateUser(userEntity);
     }
 
-    public UserDto handleLogin (String username, String password){
+    public ContextDto handleLogin (String username, String password){
         UserEntity user = userDao.getUserByUsername(username);
 
         if (!doesPasswordMatch(password, user.getPassword())){
             return null;
         }
 
-        UserDto userDto = new UserDto(
-                user.getUsername(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getOrganization(),
-                user.getAddressOne(),
-                user.getAddressTwo(),
-                user.getCity(),
-                user.getState(),
-                user.getCountry(),
-                user.getTitle(),
-                user.getPhone(),
-                user.getZip(),
-                user.getId()
-        );
+        ContextDto contextDto = new ContextDto(user.getUsername(), user.getFirstName(), user.getLastName(), user.getId());
 
-        return userDto;
+        return contextDto;
     }
 
     public boolean doesPasswordMatch (String passAttempt, String passInDb){
