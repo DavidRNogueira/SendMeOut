@@ -20,7 +20,7 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-image-crop": "^8.5.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "5.0.1",
     "react-toastify": "^5.5.0",
     "toastr": "^2.1.4",
     "typescript": "^3.8.2",
